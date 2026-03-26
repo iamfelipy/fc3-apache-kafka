@@ -1,0 +1,18 @@
+{
+	"name": "apache-kafka-learn",
+
+	"dockerComposeFile": "../docker-compose.yml",
+	"service": "fc3-go-apache-kafka",
+	"workspaceFolder": "/go/src",
+
+	"shutdownAction": "none",
+
+	"customizations": {
+		"vscode": {
+			"extensions": [
+				"golang.go",
+				"humao.rest-client"
+			]
+		}
+	}
+}

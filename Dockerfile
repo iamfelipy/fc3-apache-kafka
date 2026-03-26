@@ -1,4 +1,4 @@
-FROM golang:1.16
+FROM golang:1.24-bookworm
 
 WORKDIR /go/src
 ENV PATH="/go/bin:${PATH}"
