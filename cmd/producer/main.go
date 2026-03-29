@@ -10,7 +10,7 @@ func main() {
 	// canal usado pelo producer e pela goroutine delivery report
 	deliveryChan := make(chan kafka.Event)
 	producer := NewKafkaProducer()
-	Publish("transferiu", "teste", producer, nil,deliveryChan)
+	Publish("transferiu", "teste", producer, []byte("transferencia"),deliveryChan)
 	//DeliveryReport(deliveryChan) // prossamento sincrono
 	
 	// com esse código só há uma goroutine lendo do canal, processando todas as mensagens sequencialmente conforme chegam.
@@ -46,7 +46,7 @@ func main() {
 	// Você precisa de Flush porque o Producer do Kafka em Go é assíncrono: ele coloca as mensagens em um buffer interno e envia em background. 
 	// Ele força o envio de todas as mensagens pendentes, bloqueando a execução até que todas sejam enviadas ou até expirar o tempo (em ms) passado como parâmetro. Serve para garantir que as mensagens não fiquem no buffer antes de encerrar o programa.
 	// Não é obrigado usar Flush, mas é recomendado ao encerrar. O Kafka Producer em Go envia mensagens automaticamente para o canal, porém mantém um buffer interno. Se o programa termina antes desse buffer ser enviado, você pode perder mensagens. O Flush garante que tudo é processado antes de sair.
-	producer.Flush(1000)
+	producer.Flush(10000)
 }
 
 func NewKafkaProducer() *kafka.Producer {
