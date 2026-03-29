@@ -3,11 +3,85 @@
 #### objetivo
 - colocar o conhecimento em pratica
 
-#### como executar o ambiente
-- instalar o docker
+#### configurando ambiente
+```
+# o que precisa instalar?
+- instalar docker
+
+# sem devcontainer
 - executar "docker compose up" no terminal
 
-#### comandos e workflow
+# com devcontainer
+- baixar extensão dev container
+- abrir dev container
+```
+
+#### workflows de teste disponiveis:
+- 1: go producer + go consumer + kafka cli
+- 2: kafka cli
+
+## 1 - workflow de teste 1: go producer + go consumer + kafka cli
+
+```bash
+# como instalar a extensão tools go?
+- dev container já traz instalado
+- instalar a extensão go
+- ctrl + shift + p
+- go: install/update tools
+- instalar tudo
+
+# workflow teste:
+- objetivo:
+- consumir topico com dois grupos consumidores ao usar producer go
+- grupo 1: goapp-group 
+  - consumer goapp
+- grupo 2: kafka-cli
+  - consumer cli kafka
+  - consumer cli kafka
+
+- entrar no container kafka
+ docker exec -u 0 -it fc3-apache-kafka-kafka-1 bash
+
+-criar topico
+kafka-topics --create --topic teste --bootstrap-server localhost:9092 --partitions 3
+
+- criar consumidor cli kafka
+dentro do container kafka ficar consumindo topico com utilitario kafka nativo
+kafka-console-consumer --topic teste --bootstrap-server localhost:9092 --group kafka-cli
+
+- entrar no projeto go
+docker exec -it gokafka bash
+
+- rodar consumer
+go run cmd/consumer/main.go
+
+- rodar producer
+go run cmd/producer/main.go
+
+- ver mensagem sendo enviada pelo go producer, e consumidas no kafka e go consumer
+
+
+# go comandos uteis
+
+- comandos
+- gerenciador de pacotes, dependencias
+- guarda todas as dependencias externa da aplicação
+- go mod
+
+- init gerenciador de depedencias
+go mod init
+
+- rodar producer
+go run cmd/producer/main.go
+
+- procura dependencias nao baixadas nos arquivos e baixa e adiciona no go mod 
+go mod tidy
+
+- arquivo go.sum no go, da um freeze da versao da depedencia que estou usando
+
+```
+
+## 2 - workflow de teste: kafka cli
 
 ```bash
 # ver conteudo da instancia
